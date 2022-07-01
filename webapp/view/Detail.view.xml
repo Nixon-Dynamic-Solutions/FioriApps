@@ -1,0 +1,121 @@
+<mvc:View
+	controllerName="testapp01.controller.Detail"
+	xmlns="sap.m"
+	xmlns:semantic="sap.f.semantic"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout">
+	<semantic:SemanticPage
+		id="page"
+      
+		>
+		<semantic:titleHeading>
+			<Title
+				text="Order Number {SOObject>/0/DocEntry}"/>
+		</semantic:titleHeading>
+		<semantic:headerContent>
+			<l:HorizontalLayout>
+				<l:VerticalLayout class="sapUiMediumMarginEnd">
+					<ObjectAttribute
+						title="CustomerName"
+						text="{SOObject>/0/CardName}"/>
+					<!-- <ObjectAttribute
+						title="OrderDate"
+						text="{
+							path: 'SOObject>/0/DocDate',
+							type: 'sap.ui.model.type.Date',
+							formatOptions: { style: 'medium' }
+						}"/> -->
+					<ObjectAttribute
+						title="DeliverStatus"
+						text="{= ${SOObject>/0/Delivered} ? 'Delivered' : 'Yet to be delivered' }"/>
+                        <Label text="Price"/>
+					<ObjectNumber
+						number="{
+			parts: [{path: 'SOObject>/0/DocTotal'}, {path: 'SOObject>/0/Lines/0/Currency'}],
+			type: 'sap.ui.model.type.Currency',
+			formatOptions: {
+				showMeasure: false
+			}
+		}"
+		unit="{SOObject>/0/Lines/0/Currency}"/>
+				</l:VerticalLayout>
+				
+			</l:HorizontalLayout>
+		</semantic:headerContent>
+		<semantic:content>
+			<l:VerticalLayout>
+				
+				<Table
+					id="lineItemsList"
+					class="sapUiSmallMarginTop"
+					width="auto"
+					items="{SOObject>/0/Lines}"
+					updateFinished=".onListUpdateFinished"
+					noDataText="Unable to load data"
+					>
+					<headerToolbar>
+						<Toolbar id="lineItemsToolbar">
+							<Title
+								id="lineItemsHeader"
+								text="Items"/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column>
+							<Text text="Product"/>
+						</Column>
+						<Column
+							minScreenWidth="Tablet"
+							demandPopin="true"
+							hAlign="End">
+							<Text text="Price"/>
+						</Column>
+						<Column
+							minScreenWidth="Tablet"
+							demandPopin="true"
+							hAlign="End">
+							<Text text="Quantity"/>
+						</Column>
+						<Column
+							minScreenWidth="Tablet"
+							demandPopin="true"
+							hAlign="End">
+							<Text text="Total"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<ObjectIdentifier
+									title="ProductName"
+									text="{SOObject>ItemName}"/>
+								<ObjectNumber
+									number="{
+										path: 'SOObject>Price'
+									}"
+									unit="{SOObject>Currency}"/>
+								<ObjectAttribute
+									text="{SOObject>Quantity}"/>
+								<ObjectNumber
+									number="{
+			parts: [{path: 'SOObject>LineTotal'}, {path: 'SOObject>Currency'}],
+			type: 'sap.ui.model.type.Currency',
+			formatOptions: {
+				showMeasure: false
+			}
+		}"
+		unit="{SOObject>Currency}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</l:VerticalLayout>
+		</semantic:content>
+			<semantic:closeAction>
+			<semantic:CloseAction
+				id="closeColumn"
+				press=".onCloseDetailPress"/>
+		</semantic:closeAction>
+	</semantic:SemanticPage>
+
+</mvc:View>

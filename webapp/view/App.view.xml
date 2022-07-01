@@ -1,0 +1,62 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="testapp01.controller.App" displayBlock="true"
+xmlns:tnt="sap.tnt"
+>
+   
+    <Shell id="shell">
+    <tnt:ToolPage
+		id="app2"
+		class="sapUiDemoToolPage">
+
+	
+    	<tnt:header  >
+			<tnt:ToolHeader id="toolHead" >
+				<Button
+					id="sideNavigationToggleButton"
+					icon="sap-icon://menu2"
+					type="Transparent"
+					press=".onSideNavButtonPress"
+					tooltip="Click to toggel"
+             
+                   >
+					<layoutData>
+						<OverflowToolbarLayoutData priority="NeverOverflow"/>
+					</layoutData>
+				</Button>
+				<ToolbarSpacer/>
+				<Title
+					text="Sales Order Demo App"
+					level="H2"/>
+				<ToolbarSpacer/>
+				
+				
+				
+			</tnt:ToolHeader>
+		</tnt:header>
+		<tnt:sideContent>
+			<tnt:SideNavigation
+				expanded="true"
+				selectedKey="{side>/selectedKey}">
+				<tnt:NavigationList
+					itemSelect="onSelect">
+                     <tnt:NavigationListItem
+						text="Dashboard"
+                        href="#/dashboard"
+						></tnt:NavigationListItem>
+					<tnt:NavigationListItem
+						text="Sales Order List"
+                        href="#/test"
+						></tnt:NavigationListItem>
+                       
+				</tnt:NavigationList>
+				
+			</tnt:SideNavigation>
+		</tnt:sideContent>
+		<tnt:mainContents>
+			<App id="app">
+            
+        </App>
+		</tnt:mainContents>
+	</tnt:ToolPage>
+        
+    </Shell>
+</mvc:View>

@@ -1,0 +1,39 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="testapp01.controller.Test" displayBlock="true">
+   <Page id="page" >
+                   <content>
+        <List
+      headerText="Sales Order List"
+      class="sapUiResponsiveMargin"
+      width="auto"
+      items="{SOList>/}"
+     >
+      <items>
+         <ObjectListItem
+         	type="Active"
+            
+        press="onListItemPress"
+		title="{SOList>DocEntry}"
+		number="{
+			parts: [{path: 'SOList>DocTotal'}, {path: 'view>/currency'}],
+			type: 'sap.ui.model.type.Currency',
+			formatOptions: {
+				showMeasure: false
+			}
+		}"
+		numberUnit="{view>/currency}">
+        <!-- <firstStatus>
+				<ObjectStatus
+					text="{SOList>DocStatus}"
+					state="{
+						path: 'SOList>DocStatus',
+						formatter: 'sap.m.sample.ObjectListItem.Formatter.status'
+					}" />
+			</firstStatus> -->
+			<ObjectAttribute text="{SOList>CardName}" />
+			
+        </ObjectListItem>
+	</items>
+   </List>
+                   </content>
+</Page>
+</mvc:View>

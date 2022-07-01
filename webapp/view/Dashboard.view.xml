@@ -1,0 +1,77 @@
+<mvc:View xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:f="sap.f"
+	xmlns:card="sap.f.cards" xmlns:layout="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data" xmlns:semantic="sap.f.semantic" xmlns:l="sap.ui.layout" controllerName="testapp01.controller.Dashboard" height="100%"><semantic:SemanticPage id="page">
+		<semantic:titleHeading>
+			<Title text="Dashboard"/>
+		</semantic:titleHeading>
+		<semantic:headerContent>
+      
+        	<ScrollContainer
+		height="100%"
+		width="100%"
+		>
+          <l:HorizontalLayout>
+			<f:Card class="sapUiSmallMargin" >
+		<f:header>
+			<card:Header
+				title="Actual Sales"
+				subtitle="{tilesData>/ActualSales} AED"
+				 />
+		</f:header>
+		<f:content>
+        </f:content>
+        </f:Card>
+
+        <f:Card class="sapUiSmallMargin">
+		<f:header>
+			<card:Header
+				title="Monthly Target"
+				subtitle="{tilesData>/Monthlytarget} AED"
+				 />
+		</f:header>
+		<f:content>
+        </f:content>
+        </f:Card>
+        <f:Card class="sapUiSmallMargin">
+		<f:header>
+			<card:Header
+				title="Due Collection"
+				subtitle="{tilesData>/DueCollection} AED"
+				 />
+		</f:header>
+		<f:content>
+        </f:content>
+        </f:Card>
+             </l:HorizontalLayout>
+        </ScrollContainer>
+     
+		</semantic:headerContent>
+		<semantic:content>
+  
+		<viz:VizFrame id="idVizFrame" 
+        vizProperties="{ title: {text : 'Previous 5 Months Report', visible : true}}"
+        uiConfig="{applicationSet:'fiori'}" height="100%" width="100%" vizType="column">
+                <viz:dataset>
+                    <viz.data:FlattenedDataset data="{chartData>/Targets}">
+                        <viz.data:dimensions>
+                            <viz.data:DimensionDefinition name="Month" value="{chartData>Month}"/>
+                        </viz.data:dimensions>
+                        <viz.data:measures>
+                            <viz.data:MeasureDefinition name="ActualSales" value="{chartData>ActualTarget}"/>
+                            <viz.data:MeasureDefinition name="Target" value="{chartData>Target}"/>
+                        </viz.data:measures>
+                    </viz.data:FlattenedDataset>
+                </viz:dataset>
+
+                <viz:feeds>
+                    <viz.feeds:FeedItem id="valueAxisFeed" uid="valueAxis" type="Measure" values="ActualSales"/>
+                         <viz.feeds:FeedItem id="valueAxisFeed2" uid="valueAxis" type="Measure" values="Target"/>
+                    <viz.feeds:FeedItem id="categoryAxisFeed" uid="categoryAxis" type="Dimension" values="Month"/>
+                </viz:feeds>
+            </viz:VizFrame>
+         
+          
+             
+		</semantic:content>
+		
+	</semantic:SemanticPage>
+    </mvc:View>

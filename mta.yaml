@@ -1,0 +1,94 @@
+_schema-version: "3.2"
+ID: testapp01
+description: A Fiori application.
+version: 0.0.1
+modules:
+- name: testapp01-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: testapp01-destination-service
+    parameters:
+      content-target: true
+  - name: testapp01-repo-host
+    parameters:
+      service-key:
+        name: testapp01-repo-host-key
+  - name: testapp01-uaa
+    parameters:
+      service-key:
+        name: testapp01-uaa-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: testapp01_html_repo_host
+          ServiceInstanceName: testapp01-html5-srv
+          ServiceKeyName: testapp01-repo-host-key
+          sap.cloud.service: testapp01
+        - Authentication: OAuth2UserTokenExchange
+          Name: testapp01_uaa
+          ServiceInstanceName: testapp01-xsuaa-srv
+          ServiceKeyName: testapp01-uaa-key
+          sap.cloud.service: testapp01
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: testapp01-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: testapp01-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - testapp01.zip
+      name: testapp01
+      target-path: resources/
+- name: testapp01
+  type: html5
+  path: .
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: testapp01-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: testapp01-destination-service
+    service-plan: lite
+- name: testapp01-uaa
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: testapp01-xsuaa-srv
+    service-plan: application
+- name: testapp01-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: testapp01-html5-srv
+    service-plan: app-host
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
